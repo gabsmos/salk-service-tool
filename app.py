@@ -15,7 +15,7 @@ import json
 app = Flask(__name__)
 
 # Your Google Maps API Key
-API_KEY = ('' + __import__("os").environ['GOOGLE_MAPS_API_KEY'] + '')
+API_KEY = os.getenv("GOOGLE_MAPS_API_KEY")
 
 def validate_email(email):
     """Validate email format and check if domain exists"""
@@ -923,6 +923,8 @@ def test_maps():
     """Test Google Maps API connection"""
     try:
         print("Testing Google Maps API...")
+        if not API_KEY:
+            return jsonify({"error": "Map search is temporarily unavailable."}), 503
         gmaps = googlemaps.Client(key=API_KEY)
         
         # Test with a simple search around Sundsvall
@@ -967,6 +969,8 @@ def search_businesses():
         
         print(f"Comprehensive search parameters: {len(categories)} categories, max={max_companies}, radius={radius}m")
         
+        if not API_KEY:
+            return jsonify({"error": "Map search is temporarily unavailable."}), 503
         gmaps = googlemaps.Client(key=API_KEY)
         location = (62.3908, 17.3069)  # Sundsvall coordinates
         companies = []
