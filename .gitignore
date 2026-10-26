@@ -1,0 +1,9 @@
+
+# Private runtime configuration (already tracked files require explicit untracking)
+.env
+.env.*
+**/.env
+**/.env.*
+!.env.example
+!**/.env.example
+**/*private*key*.pem
